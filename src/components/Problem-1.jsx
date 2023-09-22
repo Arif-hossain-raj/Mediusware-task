@@ -36,13 +36,27 @@ const Problem1 = () => {
 
     //storing data with status
 
-    const allInputData = tableData.filter((item) => {
-        if (show === 'all') {
-            return true;
-        } else {
-            return item?.status === show;
-        }
-    });
+    //not working properly in case-sensitive
+
+    const sortTableData = (data) => {
+        return data.sort((a, b) => {
+            if (a.status === 'Active' || a.status === 'active' ) {
+                return -1;
+            } else if (a.status === 'Completed' || a.status === 'completed' && b.status !== 'Active' || b.status !== 'active' ) {
+                return -1;
+            } else {
+                return 1;
+            }
+        });
+    };
+
+    const allInputData = sortTableData(
+        show === 'all'
+            ? tableData
+            : tableData.filter((item) => item.status === show)
+    );
+
+
 
     return (
         <div className="container">
